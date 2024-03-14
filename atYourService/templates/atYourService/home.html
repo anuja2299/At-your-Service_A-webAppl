@@ -1,0 +1,61 @@
+{% extends "atYourService/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+{% if user.is_authenticated %}
+
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Select Requirements</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Select</button>
+            </div>
+        </form>
+    </div>
+
+    {% if radius %}
+    <h2 style="color: black">Nearby Workers with in {{radius}}KM</h2>
+    {%else%}
+    <h2 style="color: black">Nearby Workers</h2>
+    {%endif%}
+
+    {% if workers %}
+    <ul class="list-group list-group-flush">
+    {% for worker in workers %}
+        {% if worker.profession == profession %}
+
+        {{ counter.increment }}
+
+        <li class="list-group-item">
+            <p>Name: {{ worker.Name }}<br>Profession: {{worker.profession}}<br>Distance {{worker.distance.km |floatformat:2}}KM <br>Phone Number : {{worker.PhoneNumber}}<br> Years of Experience : {{worker.yearsOfExperience}}</p>
+
+        </li>
+        {%endif%}
+    {% endfor %}
+
+        {% if counter.count == 0 %}
+            <p>No {{profession}}s available within your selected location.</p>
+        {% endif %}
+
+    </ul>
+    {% else %}
+        <p>No workers available within your selected location.</p>
+    {% endif %}
+
+    <div class="alert alert-light" role="alert">
+        Do you want to <a href="{% url 'ays-home'%}" class="alert-link">change profession</a>?.
+    </div>
+
+
+<!--    _____________________________________________________________________-->
+
+{% else %}
+    <h5>You are not logged in. <a href="{% url 'login' %}">Please Login</a> </h5>
+{% endif %}
+
+{% endblock content %}
