@@ -1,0 +1,13 @@
+{% extends "atYourService/base.html" %}
+{% block content %}
+
+    <div class="alert alert-primary" role="alert">
+        You have been logged out, <a href="{% url 'login' %}" class="alert-link">Log in</a>
+    </div>
+
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a href="{% url 'login' %}">Log In Again</a>
+            </small>
+        </div>
+{% endblock content %}
